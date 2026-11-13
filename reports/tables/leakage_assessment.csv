@@ -1,0 +1,6 @@
+Group,Variables,Availability before prediction cut-off,Timing concern,Planned treatment
+Account,"State, Account length, Area code",Not verified,"Account attributes may be available before churn, but the recording date and prediction cut-off are undocumented.",Retain; acknowledge timing uncertainty.
+Plan,"International plan, Voice mail plan",Not verified,The data do not establish whether plan status was recorded before or after the intended prediction cut-off.,Retain; acknowledge timing uncertainty.
+Usage,"Day/eve/night/intl minutes and calls, vmail messages",Not verified,The aggregation window is undocumented. Usage is valid only if measured before the prediction cut-off.,Retain; acknowledge the unknown observation window.
+Charge,Day/eve/night/intl charge,Not verified,Charges share the timing uncertainty of usage. Redundancy with minutes is not itself evidence of leakage.,Exclude from model inputs because of redundancy.
+Service,Customer service calls,Not verified; specific concern,The count could include cancellation-related contacts; their timing relative to churn is unknown.,Retain in the main analysis; repeat modelling without this feature as a predefined sensitivity analysis.

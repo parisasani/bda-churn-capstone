@@ -1,0 +1,84 @@
+{
+  "source_notebook": "02_eda.ipynb",
+  "random_seed": 42,
+  "initial_features": {
+    "categorical": [
+      "State",
+      "Area code",
+      "International plan",
+      "Voice mail plan"
+    ],
+    "numeric": [
+      "Account length",
+      "Number vmail messages",
+      "Total day minutes",
+      "Total day calls",
+      "Total eve minutes",
+      "Total eve calls",
+      "Total night minutes",
+      "Total night calls",
+      "Total intl minutes",
+      "Total intl calls",
+      "Customer service calls"
+    ],
+    "excluded": [
+      "Total day charge",
+      "Total eve charge",
+      "Total night charge",
+      "Total intl charge"
+    ]
+  },
+  "options_for_cross_validation": {
+    "state_handling": [
+      "one_hot_regularised",
+      "exclude"
+    ],
+    "voicemail_features": [
+      "both",
+      "plan_only",
+      "messages_only"
+    ]
+  },
+  "evaluation": {
+    "contact_capacities": [
+      0.1,
+      0.2
+    ],
+    "capacity_rounding": "floor"
+  },
+  "rule_baseline": {
+    "conditions": [
+      {
+        "feature": "Customer service calls",
+        "operator": ">=",
+        "threshold": "k"
+      },
+      {
+        "feature": "International plan",
+        "operator": "==",
+        "value": "Yes"
+      },
+      {
+        "feature": "Total day minutes",
+        "operator": ">=",
+        "threshold": "t"
+      }
+    ],
+    "ranking": [
+      {
+        "key": "rule_score",
+        "ascending": false
+      },
+      {
+        "key": "Total day minutes",
+        "ascending": false
+      },
+      {
+        "key": "random",
+        "ascending": true,
+        "seed": 42
+      }
+    ],
+    "sensitivity_drops": "Customer service calls"
+  }
+}

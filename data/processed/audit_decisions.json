@@ -1,0 +1,51 @@
+{
+  "development_file": "churn-bigml-80.csv",
+  "test_file": "churn-bigml-20.csv",
+  "target": "Churn",
+  "rows_removed": 0,
+  "excluded_features": [
+    "Total day charge",
+    "Total eve charge",
+    "Total night charge",
+    "Total intl charge"
+  ],
+  "exclusion_reason": "Charge variables are near-exact linear functions of minutes (Section 7); excluded for redundancy, not leakage.",
+  "categorical_features": [
+    "State",
+    "Area code",
+    "International plan",
+    "Voice mail plan"
+  ],
+  "numeric_features": [
+    "Account length",
+    "Number vmail messages",
+    "Total day minutes",
+    "Total day calls",
+    "Total eve minutes",
+    "Total eve calls",
+    "Total night minutes",
+    "Total night calls",
+    "Total intl minutes",
+    "Total intl calls",
+    "Customer service calls"
+  ],
+  "sensitivity_analysis": {
+    "feature": "Customer service calls",
+    "main_analysis": "Feature retained.",
+    "sensitivity_version": "Model development and evaluation repeated without this feature.",
+    "conditions": "Same validation design and tuning budget; each version tuned independently on development data only."
+  },
+  "preprocessing_policy": "Fit learned preprocessing within training folds only.",
+  "test_policy": "Before final evaluation, use the test file only for schema and exact-overlap checks. Do not use it for EDA, feature selection, tuning or threshold selection.",
+  "limitations": [
+    "Observation dates, prediction cut-off and feature timing are not documented.",
+    "Availability of predictors before churn is not verified.",
+    "Customer service calls may include cancellation-related contacts.",
+    "No customer identifier; overlap was checked only for exact records and identical predictor profiles.",
+    "Results describe discrimination of recorded churn labels, not prospective performance or causal effects."
+  ],
+  "open_questions_for_eda": [
+    "Handling of State (51 categories; high cardinality).",
+    "Relationship between Voice mail plan and Number vmail messages."
+  ]
+}

@@ -1,0 +1,21 @@
+Variable,Description,Group,Role,Data type,Unique values,Missing,Example,Audit note
+State,US state (two-letter code),Account,Feature,object,51,0,KS,51 categories; high cardinality for one-hot encoding
+Account length,Length of the customer account (unit not documented),Account,Feature,int64,205,0,128,
+Area code,Telephone area code,Account,Feature,int64,3,0,415,Stored as number but is categorical
+International plan,Has international calling plan (Yes/No),Plan,Feature,object,2,0,No,
+Voice mail plan,Has voice mail plan (Yes/No),Plan,Feature,object,2,0,Yes,
+Number vmail messages,Number of voice mail messages,Usage,Feature,int64,42,0,25,
+Total day minutes,Total daytime call minutes,Usage,Feature,float64,1489,0,265.1,
+Total day calls,Total daytime calls,Usage,Feature,int64,115,0,110,
+Total day charge,Total daytime charge,Charge,Feature,float64,1489,0,45.07,Check redundancy with day minutes
+Total eve minutes,Total evening call minutes,Usage,Feature,float64,1442,0,197.4,
+Total eve calls,Total evening calls,Usage,Feature,int64,120,0,99,
+Total eve charge,Total evening charge,Charge,Feature,float64,1301,0,16.78,Check redundancy with eve minutes
+Total night minutes,Total night call minutes,Usage,Feature,float64,1444,0,244.7,
+Total night calls,Total night calls,Usage,Feature,int64,118,0,91,
+Total night charge,Total night charge,Charge,Feature,float64,885,0,11.01,Check redundancy with night minutes
+Total intl minutes,Total international call minutes,Usage,Feature,float64,158,0,10.0,
+Total intl calls,Total international calls,Usage,Feature,int64,21,0,3,
+Total intl charge,Total international charge,Charge,Feature,float64,158,0,2.7,Check redundancy with intl minutes
+Customer service calls,Number of calls to customer service,Service,Feature,int64,10,0,1,Possible leakage: timing relative to churn unknown
+Churn,Customer left the service (True/False),Target,Target,bool,2,0,False,Binary target
