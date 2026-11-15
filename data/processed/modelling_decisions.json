@@ -1,0 +1,71 @@
+{
+  "source_notebook": "03_modelling.ipynb",
+  "random_seed": 42,
+  "contact_capacities": [
+    0.1,
+    0.2
+  ],
+  "capacity_rounding": "floor",
+  "tuning_criterion": "equally weighted mean of Recall@10% and Recall@20%",
+  "final_selection": "5-fold stratified CV on the full development data, using the outer folds from Section 3",
+  "random_selection": {
+    "n_orderings": 1000
+  },
+  "random_forest_fixed_settings": {
+    "n_estimators": 100,
+    "max_features": "sqrt",
+    "class_weight": null,
+    "random_state": 42
+  },
+  "logistic_regression_fixed_settings": {
+    "solver": "lbfgs",
+    "class_weight": null,
+    "max_iter": 5000
+  },
+  "rule_ranking": "rule score, then Total day minutes, then seeded random order",
+  "test_policy": "Before final evaluation, use the test file only for schema and exact-overlap checks. Do not use it for EDA, feature selection, tuning or threshold selection.",
+  "selected_settings": {
+    "rule": {
+      "main": {
+        "service_calls_threshold": 5,
+        "day_minutes_percentile": 95.0,
+        "day_minutes_threshold": 269.775,
+        "cv_tuning_score": 0.5026806526806527
+      },
+      "without_service_calls": {
+        "service_calls_threshold": null,
+        "day_minutes_percentile": 95.0,
+        "day_minutes_threshold": 269.775,
+        "cv_tuning_score": 0.46267066267066265
+      }
+    },
+    "logistic_regression": {
+      "main": {
+        "state_handling": "one_hot_regularised",
+        "voicemail_features": "both",
+        "C": 0.1,
+        "cv_tuning_score": 0.47309357309357314
+      },
+      "without_service_calls": {
+        "state_handling": "exclude",
+        "voicemail_features": "messages_only",
+        "C": 0.1,
+        "cv_tuning_score": 0.5024975024975026
+      }
+    },
+    "random_forest": {
+      "main": {
+        "state_handling": "exclude",
+        "voicemail_features": "both",
+        "min_samples_leaf": 1,
+        "cv_tuning_score": 0.7577256077256077
+      },
+      "without_service_calls": {
+        "state_handling": "exclude",
+        "voicemail_features": "both",
+        "min_samples_leaf": 5,
+        "cv_tuning_score": 0.6083749583749585
+      }
+    }
+  }
+}
