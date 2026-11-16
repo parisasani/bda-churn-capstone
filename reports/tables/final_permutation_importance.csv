@@ -1,0 +1,55 @@
+method,version,predictor,mean_importance_pp,sd_importance_pp,rank
+Logistic Regression,main,Total day minutes,7.052631578947367,2.5169214320436617,1
+Logistic Regression,main,International plan,5.473684210526315,1.8471540870797998,2
+Logistic Regression,main,Customer service calls,4.754385964912279,2.631518450605293,3
+Logistic Regression,main,Total eve minutes,2.350877192982455,1.4346218683390735,4
+Logistic Regression,main,Voice mail plan,1.9122807017543841,1.4981335433574023,5
+Logistic Regression,main,Area code,0.7017543859649099,0.34783923802698213,6
+Logistic Regression,main,Total night minutes,0.5087719298245601,1.1521332764486996,7
+Logistic Regression,main,Total day calls,0.47368421052631565,0.7359341047885242,8
+Logistic Regression,main,Total night calls,0.31578947368421023,0.5097202085384227,9
+Logistic Regression,main,Number vmail messages,0.12280701754385744,0.5473707478195214,10
+Logistic Regression,main,Total intl minutes,0.052631578947368175,1.7060180713454882,11
+Logistic Regression,main,Total eve calls,0.03508771929824498,0.5159289661616435,12
+Logistic Regression,main,Account length,-0.17543859649122787,0.5918111119852658,13
+Logistic Regression,main,State,-0.8245614035087736,1.3937577177070073,14
+Logistic Regression,main,Total intl calls,-1.3508771929824566,1.1454815011964252,15
+Logistic Regression,without_service_calls,Total day minutes,20.894736842105264,2.3665045684268473,1
+Logistic Regression,without_service_calls,International plan,6.807017543859652,2.163148548000586,2
+Logistic Regression,without_service_calls,Total eve minutes,6.403508771929826,1.4501842487761607,3
+Logistic Regression,without_service_calls,Number vmail messages,5.8070175438596525,1.3147606383015116,4
+Logistic Regression,without_service_calls,Total night minutes,0.5087719298245639,0.697735010770023,5
+Logistic Regression,without_service_calls,Total day calls,0.017543859649125266,0.42564046202185557,6
+Logistic Regression,without_service_calls,Area code,0.0,0.0,7
+Logistic Regression,without_service_calls,Total night calls,-0.08771929824561246,0.39296841215939043,8
+Logistic Regression,without_service_calls,Total eve calls,-0.1228070175438593,0.22641214060635528,9
+Logistic Regression,without_service_calls,Account length,-0.17543859649122548,0.5918111119852665,10
+Logistic Regression,without_service_calls,Total intl minutes,-0.7543859649122769,1.6218216134772614,11
+Logistic Regression,without_service_calls,Total intl calls,-1.0877192982456119,1.462318978534441,12
+Random Forest,main,Total day minutes,35.66666666666666,2.3726855470527717,1
+Random Forest,main,Customer service calls,19.333333333333325,1.220180342203923,2
+Random Forest,main,International plan,11.140350877192976,1.5396397809064095,3
+Random Forest,main,Total eve minutes,9.438596491228063,1.1803897494126037,4
+Random Forest,main,Voice mail plan,5.684210526315784,1.2470233925935104,5
+Random Forest,main,Total intl minutes,4.561403508771922,0.9306175207757749,6
+Random Forest,main,Total intl calls,4.105263157894727,1.0471727785610798,7
+Random Forest,main,Total night minutes,1.701754385964905,0.6726417372870436,8
+Random Forest,main,Number vmail messages,0.17543859649122825,0.5918111119852689,9
+Random Forest,main,Total day calls,0.05263157894736451,0.2882750302658744,10
+Random Forest,main,Account length,-0.03508771929824572,0.3639430564650121,11
+Random Forest,main,Area code,-0.08771929824561579,0.3678588745138123,12
+Random Forest,main,Total eve calls,-0.12280701754386003,0.26526680683880655,13
+Random Forest,main,Total night calls,-0.1578947368421065,0.3427677516752401,14
+Random Forest,without_service_calls,Total day minutes,34.40350877192982,2.5912825242559983,1
+Random Forest,without_service_calls,International plan,10.719298245614029,1.8046931173325051,2
+Random Forest,without_service_calls,Total eve minutes,7.438596491228067,0.9941401847387875,3
+Random Forest,without_service_calls,Voice mail plan,5.578947368421045,1.536638228278828,4
+Random Forest,without_service_calls,Total intl minutes,2.929824561403499,0.8371374946178702,5
+Random Forest,without_service_calls,Total intl calls,2.175438596491221,0.9549338308628764,6
+Random Forest,without_service_calls,Total night minutes,2.1228070175438503,0.8348523106608626,7
+Random Forest,without_service_calls,Number vmail messages,1.4210526315789451,0.5012164017308521,8
+Random Forest,without_service_calls,Total day calls,0.19298245614034665,0.5611576896788496,9
+Random Forest,without_service_calls,Account length,0.08771929824561098,0.619412971863779,10
+Random Forest,without_service_calls,Total eve calls,0.01754385964911916,0.5611576896788504,11
+Random Forest,without_service_calls,Area code,-0.10526315789473717,0.42376621045942114,12
+Random Forest,without_service_calls,Total night calls,-0.7017543859649145,0.7485884233881702,13

@@ -1,0 +1,15 @@
+predictor,mean_abs_shap
+Total day minutes,0.07132911007991209
+Customer service calls,0.05354357297749142
+International plan,0.04464928649424579
+Total eve minutes,0.02239618029120045
+Voice mail plan,0.018814635470019183
+Total intl calls,0.01724122647182282
+Total intl minutes,0.016277884318918814
+Total night minutes,0.011107737395698137
+Total day calls,0.008292694815606183
+Number vmail messages,0.008156635126300738
+Total night calls,0.007736728358477249
+Account length,0.0066608223240416055
+Total eve calls,0.005535107447143547
+Area code,0.003299124569466291

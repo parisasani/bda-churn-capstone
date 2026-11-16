@@ -1,0 +1,15 @@
+comparison,capacity,observed_difference_pp,ci_low_pp,ci_high_pp,excludes_zero
+Random Forest minus Rule-based (main),0.1,31.578947368421044,21.666237113402055,42.857142857142854,True
+Random Forest minus Rule-based (main),0.2,20.000000000000007,10.71428571428572,28.12575849514563,True
+Random Forest minus Logistic Regression (main),0.1,33.68421052631578,23.422944220816568,44.58150248051027,True
+Random Forest minus Logistic Regression (main),0.2,30.526315789473692,20.876944837340872,39.72750036824274,True
+Random Forest minus Rule-based (without_service_calls),0.1,24.210526315789476,15.216420807453417,31.818181818181813,True
+Random Forest minus Rule-based (without_service_calls),0.2,8.42105263157894,1.2048192771084374,14.894083613288538,True
+Random Forest minus Logistic Regression (without_service_calls),0.1,21.052631578947373,11.224251382796105,28.431372549019606,True
+Random Forest minus Logistic Regression (without_service_calls),0.2,8.42105263157894,1.9797126771500697,15.534519956850055,True
+Rule-based: main minus without service calls,0.1,1.0526315789473717,-3.260869565217389,5.2097039473684115,False
+Rule-based: main minus without service calls,0.2,8.42105263157894,0.9997524752475256,16.129032258064512,True
+Logistic Regression: main minus without service calls,0.1,-4.21052631578947,-11.207336382828995,3.296703296703296,False
+Logistic Regression: main minus without service calls,0.2,-2.1052631578947434,-12.247764274249024,7.448138297872327,False
+Random Forest: main minus without service calls,0.1,8.42105263157894,1.8863516134720504,20.253164556962023,True
+Random Forest: main minus without service calls,0.2,20.000000000000007,11.827956989247312,27.90697674418604,True
