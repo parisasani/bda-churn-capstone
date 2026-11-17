@@ -9,20 +9,36 @@
 
 A telecom provider may only be able to contact a fraction of its customers during a retention campaign. This project asks whether ranking customers by predicted churn risk captures more customers with recorded churn than random selection or a simple rule-based approach under the same contact limit.
 
-The project will compare Logistic Regression and Random Forest with both baselines at contact capacities of 10% and 20%. At each capacity, **recall** measures the proportion of all recorded churners included in the contact list, while **lift** measures how many times higher the churn rate in that list is than the rate expected under random selection.
+The project compares Logistic Regression and Random Forest with both baselines at contact capacities of 10% and 20%. At each capacity, **recall** measures the share of all recorded churners included in the contact list. **Lift** is the churn rate in the contact list divided by the overall churn rate in the evaluation set.
 
-The dataset does not record retention interventions. The project therefore cannot estimate how many customers would stay because they were contacted or what financial impact a campaign would have.
+The dataset does not record retention interventions. Estimating how many customers would stay as a result of being contacted, or the financial impact of a campaign, would require intervention data.
+
+## Key results
+
+The reserved test set contained 667 customers, including 95 with recorded churn. Final test-set performance was evaluated after all model and rule settings had been fixed.
+
+| Method (main version) | Recall at 10% (66 contacts) | Recall at 20% (133 contacts) |
+| --- | ---: | ---: |
+| Random selection (mean) | 9.8% | 19.9% |
+| Rule-based approach | 34.7% | 66.3% |
+| Logistic Regression | 32.6% | 55.8% |
+| Random Forest | **66.3%** | **86.3%** |
+
+- **Test performance.** Random Forest achieved the highest recall at both capacities. It ranked 63 of the 95 recorded churners among the first 66 contacts, close to the maximum achievable recall of 69.5% at 10% capacity. At 20% capacity, it ranked 82 of the 95 recorded churners among the first 133 contacts.
+- **Uncertainty.** All eight paired 95% bootstrap intervals for the recall differences between Random Forest and the corresponding rule-based and Logistic Regression versions were above zero. These comparisons covered both feature-set versions and both contact capacities, using 2,000 bootstrap replicates.
+- **Sensitivity analysis.** After excluding `Customer service calls` and retuning, Random Forest still achieved the highest recall at both capacities, with 57.9% at 10% and 66.3% at 20%. The timing of service calls relative to churn is undocumented, so this analysis shows how the methods performed on the same test set when the predictor was excluded.
+- **Model interpretation.** `Total day minutes` ranked first by permutation importance in all four fitted model versions. In the main Random Forest, `Total day minutes`, `Customer service calls` and `International plan` ranked highest by both permutation importance and mean absolute SHAP value. The rule-based approach used the same three predictors.
 
 ## Dataset
 
-This project uses the [Telecom Churn Dataset (BigML split)](https://www.kaggle.com/datasets/mnassrib/telecom-churn-datasets), available on Kaggle. It contains 3,333 records, each with 19 input variables and a binary `Churn` target.
+The project uses the Telecom Churn Dataset (BigML split), which contains 3,333 records with 19 input variables and a binary `Churn` target. [Dataset on Kaggle](https://www.kaggle.com/datasets/mnassrib/telecom-churn-datasets)
 
 | File | Role | Records |
 | --- | --- | ---: |
-| `data/raw/churn-bigml-80.csv` | Development set: data audit, exploratory data analysis (EDA), and model development and validation | 2,666 |
-| `data/raw/churn-bigml-20.csv` | Test set: reserved for final performance evaluation | 667 |
+| `data/raw/churn-bigml-80.csv` | Development set for the data audit, exploratory data analysis (EDA), model development and validation | 2,666 |
+| `data/raw/churn-bigml-20.csv` | Test set reserved for final performance evaluation | 667 |
 
-During the data audit, the test file was used only to check its structure and look for exact overlap with the development set. It was not used in EDA and will not be used to select features, tune models, or choose rule thresholds.
+During the data audit, the test file was used only to check its structure and look for exact overlap with the development set. EDA, feature selection, model tuning and rule-threshold selection used the development set. Final test-set performance was evaluated in `04_final_evaluation.ipynb` after all model and rule settings had been fixed.
 
 The available dataset documentation does not specify observation dates or a prediction horizon and provides limited information on how the data were collected.
 
@@ -34,7 +50,7 @@ bda-churn-capstone/
 ├── .gitignore
 ├── requirements.txt
 ├── data/
-│   ├── raw/                          # Original development and test CSV files (never modified)
+│   ├── raw/                          # Original development and test CSV files
 │   └── processed/
 │       ├── audit_decisions.json      # Decisions recorded during the data audit
 │       ├── eda_decisions.json        # Settings for the modelling notebook
@@ -43,39 +59,44 @@ bda-churn-capstone/
 ├── notebooks/
 │   ├── 01_data_audit.ipynb           # Data quality, overlap, redundancy and leakage checks
 │   ├── 02_eda.ipynb                  # Exploratory analysis of the development data
-│   └── 03_modelling.ipynb            # Nested cross-validation of baselines and models
+│   ├── 03_modelling.ipynb            # Nested cross-validation of baselines and models
+│   └── 04_final_evaluation.ipynb     # Test evaluation, bootstrap intervals and interpretation
 └── reports/
     ├── figures/                      # Figures generated by the notebooks
     └── tables/                       # Tables generated by the notebooks
 ```
 
-The final test evaluation and model interpretation are planned for the next stage.
+## Validation design
 
-## Planned validation design
+- The development set was used for nested stratified cross-validation with five outer and five inner folds. Within each outer training partition, inner cross-validation selected the feature sets, model hyperparameters and rule thresholds. The corresponding outer validation fold was used to estimate performance.
+- Preprocessing steps such as scaling and encoding were fitted only on the training partition of each fold.
+- All methods used the same 10% and 20% contact capacities. The number of contacts was rounded down at each capacity.
+- The sensitivity analysis repeated model and rule tuning without `Customer service calls` using the same validation splits as the main analysis.
+- The modelling notebook read `audit_decisions.json` and `eda_decisions.json` from `data/processed/` and saved the final settings in `modelling_decisions.json`.
+- The final models were fitted on the full development set using the saved settings. The final evaluation notebook applied paired bootstrap resampling to test customers and used permutation feature importance and SHAP to interpret the fitted models.
 
-- The development set will be used for stratified cross-validation. In each outer split, the training portion will be used to select feature sets, model hyperparameters and rule thresholds through inner cross-validation. The outer validation portion will be used to estimate performance.
-- Preprocessing steps that learn from data, such as scaling and encoding, will be fitted only on the training data for each fold.
-- All methods will be compared at the same contact capacities: 10% and 20%. The number of contacts will be rounded down so that neither limit is exceeded.
-- The sensitivity analysis will repeat model development and rule-based evaluation without `Customer service calls`, because the timing of those calls relative to churn is not documented. Both versions will use the same validation splits.
-- The modelling notebook will read `audit_decisions.json` and `eda_decisions.json` from `data/processed/` to apply the recorded settings consistently.
-- The test set will be used for final performance evaluation after all model and rule settings have been fixed.
+## How to run
 
- ## How to run
-Run `01_data_audit.ipynb` first, then `02_eda.ipynb`.
+Before running the notebooks, check that `churn-bigml-80.csv` and `churn-bigml-20.csv` are in `data/raw/` inside your copy of the repository. If either file is missing, download it from the Kaggle link in the Dataset section.
 
-For either option, make sure `churn-bigml-80.csv` and `churn-bigml-20.csv` are in `data/raw/` inside your copy of the repository. If either file is missing, download it from the Kaggle link in the Dataset section.
+Run the notebooks in this order:
+
+1. [`01_data_audit.ipynb`](notebooks/01_data_audit.ipynb)
+2. [`02_eda.ipynb`](notebooks/02_eda.ipynb)
+3. [`03_modelling.ipynb`](notebooks/03_modelling.ipynb)
+4. [`04_final_evaluation.ipynb`](notebooks/04_final_evaluation.ipynb)
 
 ### Google Colab
 
 1. On GitHub, select **Code → Download ZIP** and extract the archive.
-2. Copy the extracted folder to Google Drive so the project is at `MyDrive/bda-churn-capstone/`. Check that both CSV files are in `data/raw/`.
-3. Open `notebooks/01_data_audit.ipynb` in Colab and run all cells in order. The setup cell mounts Google Drive and sets `PROJECT`. If your project folder is in a different location, update `PROJECT` to match.
-4. Open `notebooks/02_eda.ipynb`, use the same `PROJECT` path, and run all cells in order.
-5. Open `notebooks/03_modelling.ipynb`, use the same `PROJECT` path, and run all cells in order. The Random Forest cells take about 10–15 minutes in Colab.
+2. Copy the extracted project folder to Google Drive as `MyDrive/bda-churn-capstone/`. Check that both CSV files are in `data/raw/`.
+3. Open `notebooks/01_data_audit.ipynb` in Colab and run the setup cell to mount Google Drive. Check that `PROJECT` points to your project folder, then run the remaining cells in order.
+4. Open the remaining notebooks in the order above. Use the same `PROJECT` path and run all cells in each notebook. The Random Forest cells in `03_modelling.ipynb` can take several minutes.
+5. If SHAP is missing, run `%pip install shap` in a Colab code cell before running `04_final_evaluation.ipynb`.
 
-### Locally
+### Local setup
 
-With Git, Python and Jupyter Notebook installed, clone the repository and install its dependencies:
+With Git, Python and Jupyter Notebook installed, clone the repository and install the dependencies:
 
 ```bash
 git clone https://github.com/parisasani/bda-churn-capstone.git
@@ -83,21 +104,22 @@ cd bda-churn-capstone
 python -m pip install -r requirements.txt
 ```
 
-Check that both CSV files are in `data/raw/`, then start Jupyter from the `notebooks/` directory:
+Once both CSV files are in `data/raw/`, start Jupyter from the `notebooks/` directory:
 
 ```bash
 cd notebooks
 jupyter notebook
 ```
 
-Open and run the three notebooks in the order shown above. Check that `PROJECT` points to the repository root, one level above `notebooks/`.
+Open and run the four notebooks in order. Check that `PROJECT` points to the repository root, one level above `notebooks/`.
 
-The notebooks save decision files in `data/processed/` and generated figures and tables in `reports/`.
+The notebooks save decision files in `data/processed/`, figures in `reports/figures/` and tables in `reports/tables/`.
 
 ## Project status
 
 - [x] Data audit (`01_data_audit.ipynb`)
 - [x] Exploratory data analysis (`02_eda.ipynb`)
-- [x] Model development and cross-validated comparison with baselines on the development set, including the sensitivity analysis without `Customer service calls` (`03_modelling.ipynb`)
-- [ ] Final evaluation on the reserved test set
-- [ ] Model interpretation using SHAP and permutation feature importance
+- [x] Model development, cross-validated comparison with baselines and sensitivity analysis (`03_modelling.ipynb`)
+- [x] Final evaluation on the reserved test set (`04_final_evaluation.ipynb`)
+- [x] Model interpretation using SHAP and permutation feature importance (`04_final_evaluation.ipynb`)
+- [ ] Written report
